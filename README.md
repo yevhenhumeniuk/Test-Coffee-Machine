@@ -106,12 +106,18 @@ Install and run the application.
 docker/composer install
 docker/build
 ```
+TODO: add cs-fixer init
 
 Examples of the use of the application.
 ```
 docker/console app:order-drink tea 0.5 1 -e
 docker/console app:order-drink coffee 0.5
 docker/console app:order-drink chocolate 1 --extra-hot
+```
+
+Apply coding standards.
+```
+docker/cs-fixer fix . --allow-risky=yes
 ```
 
 Run tests

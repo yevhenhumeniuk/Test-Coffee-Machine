@@ -1,4 +1,5 @@
 /.idea
+/tools/
 /vendor/
 /test.xml
 /.phpunit.result.cache
