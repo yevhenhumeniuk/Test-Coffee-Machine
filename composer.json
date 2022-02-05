@@ -12,5 +12,10 @@
             "GetWith\\CoffeeMachine\\Tests\\Unit\\": "tests/Unit",
             "GetWith\\CoffeeMachine\\Tests\\Integration\\": "tests/Integration"
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "infection/extension-installer": false
+        }
     }
 }
