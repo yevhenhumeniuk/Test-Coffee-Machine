@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace GetWith\CoffeeMachine\Console;
 
 use GetWith\CoffeeMachine\Drink\Contract\ResponseOrderMessagePresenterInterface;
+use GetWith\CoffeeMachine\Drink\Contract\StoreDrinkOrderDbGatewayInterface;
 use GetWith\CoffeeMachine\Drink\Contract\ValidationMessagePresenterInterface;
 use GetWith\CoffeeMachine\Drink\Contract\ValidatorInterface;
+use GetWith\CoffeeMachine\Drink\Factory\DrinkOrderDbGatewayFactory;
 use GetWith\CoffeeMachine\Drink\Factory\ResponsePresenterFactory;
 use GetWith\CoffeeMachine\Drink\Factory\ValidationPresenterFactory;
 use GetWith\CoffeeMachine\Drink\Factory\ValidatorFactory;
@@ -27,6 +29,7 @@ class MakeDrinkCommand extends Command
     private ValidatorInterface $validator;
     private ValidationMessagePresenterInterface $validationPresenter;
     private DrinkInputToOrderDtoPresenter $orderPresenter;
+    private StoreDrinkOrderDbGatewayInterface $orderStorage;
     private ResponseOrderMessagePresenterInterface $outputPresenter;
 
     public function __construct()
@@ -37,6 +40,7 @@ class MakeDrinkCommand extends Command
         $this->validator = ValidatorFactory::create()->makeDrinkValidator();
         $this->validationPresenter = ValidationPresenterFactory::create()->makeConsoleMessagePresenter();
         $this->orderPresenter = DrinkInputToOrderDtoPresenter::create();
+        $this->orderStorage = DrinkOrderDbGatewayFactory::create()->makeStoreDbGateway();
         $this->outputPresenter = ResponsePresenterFactory::create()->makeConsolePresenter();
     }
 
@@ -81,7 +85,8 @@ class MakeDrinkCommand extends Command
         }
 
         $orderDto = $this->orderPresenter->format($inputDto);
-        // todo store the order (collect)
+        $this->orderStorage->pushMoney($orderDto);
+
         $message = $this->outputPresenter->format($orderDto);
         $output->writeln($message);
 
