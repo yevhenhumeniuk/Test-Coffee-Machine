@@ -106,7 +106,11 @@ Install and run the application.
 docker/composer install
 docker/build
 ```
-TODO: add cs-fixer init
+
+Install linter.
+```
+docker/composer require --working-dir=tools/php-cs-fixer friendsofphp/php-cs-fixer
+```
 
 Examples of the use of the application.
 ```
